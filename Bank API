@@ -1,0 +1,27 @@
+import requests
+
+# Bank 1 URL
+sample_bank = sampleURL.com
+
+# GET Request
+bank_data = requests.get(sample_bank, headers=headers)
+
+# Check Status Code
+if bank_data.status_code == 200:
+    my_data = bank_data.json()
+    print(my_data)
+else:
+    print("Failed")
+
+# Bank 2 URL
+sample_bank2 = sampleURL2.com
+
+# GET Request
+bank_data2 = requests.get(sample_bank2, headers=headers)
+
+# Check Status Code
+if bank_data2.status_code == 200:
+    my_data.append(bank_data2.json())
+    print(my_data)
+else:
+    print("Failed")
