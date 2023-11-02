@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial App Prototype</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .account-name {
+            font-weight: bold;
+        }
+
+        .expense-item,
+        .debt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .category {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> WealthWise</h1>
+        <nav>
+            <ul>
+                <li>Home</li>
+                <li>Accounts</li>
+                <li>Expenses</li>
+                <li>Debt</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+            <p>Welcome to WealthWise! Track your finances and make informed decisions.</p>
+        </section>
+        <section id="accounts">
+            <h2>Accounts</h2>
+            <div id="account-list">
+                <div class="account-item">
+                    <span class="account-name">Checking Account:</span>
+                    <span>$2,500.00</span>
+                </div>
+                <div class="account-item">
+                    <span class="account-name">Savings Account:</span>
+                    <span>$5,000.00</span>
+                </div>
+            </div>
+        </section>
+        <section id="expenses">
+            <h2>Expenses</h2>
+            <div id="expense-list">
+                <div class="expense-item">
+                    <span class="category">Groceries:</span>
+                    <span>$300.00</span>
+                </div>
+                <div class="expense-item">
+                    <span class="category">Rent:</span>
+                    <span>$1,200.00</span>
+                </div>
+            </div>
+        </section>
+        <section id="debt">
+            <h2>Debt</h2>
+            <div id="debt-list">
+                <div class="debt-item">
+                    <span class="description">Credit Card Debt:</span>
+                    <span>$1,000.00</span>
+                </div>
+                <div class="debt-item">
+                    <span class="description">Student Loan:</span>
+                    <span>$10,000.00</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
