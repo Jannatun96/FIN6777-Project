@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="welcome-container">
+        <h1>Welcome, {{ user_profile.user.first_name }}!</h1>
+
+        <div class="category-container" id="financial-overview">
+            <h2 class="category-title">Financial Overview</h2>
+            <ul class="category-details">
+                <li><strong>Routing Number:</strong> {{ user_profile.routing_number }}</li>
+                <li><strong>Bank Account Number:</strong> {{ user_profile.bank_account_number }}</li>
+            </ul>
+        </div>
+
+        <div class="category-container" id="debt-overview">
+            <h2 class="category-title">Debt Overview</h2>
+            <ul class="category-details">
+                <li><strong>Credit Card Debt:</strong> ${{ user_profile.credit_card_debt }}</li>
+                <li><strong>Mortgage Value:</strong> ${{ user_profile.mortgage_value }}</li>
+                <li><strong>Car Loan:</strong> ${{ user_profile.car_loan }}</li>
+                <li><strong>Student Loan:</strong> ${{ user_profile.student_loan }}</li>
+            </ul>
+        </div>
+
+        <div class="category-container" id="investment-portfolio">
+            <h2 class="category-title">Investment Portfolio</h2>
+            <ul class="category-details">
+                <li><strong>Portfolio Value:</strong> ${{ user_profile.investment_portfolio_value }}</li>
+            </ul>
+        </div>
+
+        <div class="category-container" id="expenses">
+            <h2 class="category-title">Expenses</h2>
+            <ul class="category-details">
+                {% for expense in expenses %}
+                    <li>${{ expense.amount }} - {{ expense.description }} - {{ expense.date }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
