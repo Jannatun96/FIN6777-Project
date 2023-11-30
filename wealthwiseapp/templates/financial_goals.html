@@ -1,0 +1,19 @@
+<!-- financial_goals.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Your Financial Goals</h2>
+    <ul>
+        {% for goal in goals %}
+            <li>{{ goal.title }} - ${{ goal.target_amount }}{% if goal.is_achieved %} (Achieved){% endif %}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add a New Financial Goal</h2>
+    <form method="post" action="{% url 'financial_goals' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Goal</button>
+    </form>
+{% endblock %}
+

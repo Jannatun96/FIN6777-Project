@@ -10,7 +10,7 @@ import re
 import secrets
 import string
 from django.contrib.auth.models import User
-from wealthwiseapp.models import ExpenseCategory, UserProfile, Expense
+from wealthwiseapp.models import ExpenseCategory, UserProfile, Expense, OtherBankAccount
 
 class FinancialProvider(BaseProvider):
     def bank_account_number(self):
@@ -43,9 +43,6 @@ class FinancialProvider(BaseProvider):
         # Generate a random student loan value
         return self.random_int(min=1, max=100000)
 
-    def investment_portfolio_value(self):
-        # Generate a random value for an investment portfolio
-        return self.generator.pyfloat(left_digits=5, right_digits=2, positive=True)
 
 class ExtendedFinancialProvider(FinancialProvider):
     def other_bank_account_number(self):
@@ -56,7 +53,26 @@ class ExtendedFinancialProvider(FinancialProvider):
         # Generate a bank balance for another bank
         variation_percentage = random.uniform(-0.3, 0.3)
         return original_balance * (1 + variation_percentage)
+    def account_type(self):
+        # Generate a random account type
+        return self.random_element(['Checking', 'Savings'])
+    def bank_name(self):
+        # Generate a random bank name
+        return self.random_element(['Bank of America', 'Wells Fargo', 'JPMorgan Chase Bank NA', 'HSBC'])
+    def salary(self, min_value=50000, max_value=150000):
+        # Generate a random salary value
+        return self.generator.pyfloat(left_digits=6, right_digits=2, positive=True, min_value=min_value, max_value=max_value)
 
+    def cryptocurrency_balance(self):
+        # Generate a random cryptocurrency balance
+        return self.generator.pyfloat(left_digits=5, right_digits=2, positive=True)
+    def stocks_value(self):
+        # Generate a random value for stocks
+        return self.generator.pyfloat(left_digits=4, right_digits=2, positive=True)
+
+    def bonds_value(self):
+        # Generate a random value for bonds
+        return self.generator.pyfloat(left_digits=4, right_digits=2, positive=True)
 # Function to generate user_id
 def generate_user_id(name):
     user_id = re.sub(r'\s+', '', name).lower()
@@ -97,18 +113,18 @@ fake.add_provider(ExtendedFinancialProvider)
 # Create Expense Categories
 def generate_category_description(category):
     category_descriptions = {
-        'Food': ['restaurant', 'grocery', 'food'],
-        'Clothing': ['clothing', 'apparel', 'fashion'],
-        'Entertainment': ['movies', 'concert', 'entertainment'],
-        'Utilities': ['utilities', 'bills', 'electricity', 'water'],
-        'Rent': ['rent', 'housing'],
-        'Other': ['miscellaneous', 'other']
+        'Food': ['Restaurant', 'Grocery', 'Food'],
+        'Clothing': ['Clothing', 'Apparel', 'Fashion'],
+        'Entertainment': ['Movies', 'Concert', 'Entertainment'],
+        'Utilities': ['Utilities', 'Bills', 'Electricity', 'Water'],
+        'Rent': ['Rent', 'Housing'],
+        'Other': ['Miscellaneous', 'Other']
     }
 
     return fake.random_element(category_descriptions.get(category, ['Random expense']))
 
 # Generate data for 100 users with expenses
-for _ in range(100):
+for _ in range(10):
     name = fake.name().split()
     first_name = name[0]
     last_name = ' '.join(name[1:])
@@ -125,11 +141,15 @@ for _ in range(100):
         user=user,
         routing_number=fake.routing_number(),
         bank_account_number=fake.bank_account_number(),
+        balance=fake.bank_balance(),
         credit_card_debt=fake.credit_card_debt(),
         mortgage_value=fake.mortgage(),
         car_loan=fake.car_loan(),
         student_loan=fake.student_loan(),
-        investment_portfolio_value=fake.investment_portfolio_value()
+        salary=fake.salary(),
+        cryptocurrency_balance=fake.cryptocurrency_balance(),
+        stocks_value=fake.stocks_value(),
+        bonds_value=fake.bonds_value(),
     )
 
     for _ in range(5):
@@ -146,7 +166,22 @@ for _ in range(100):
             amount=amount,
             category=category,
             description=description,
-            date=fake.date_this_year()
+            date=fake.date_this_month()
         )
 
+    # Create other bank accounts
+    for _ in range(4):  # Assuming you want to create 2 additional bank accounts
+        account_type = fake.account_type()
+        bank_name = fake.bank_name()
+        other_account_number = fake.other_bank_account_number()
+        other_account_balance = fake.other_bank_balance(user_profile.balance)
+
+        # Save the other bank account details to the database
+        other_account = OtherBankAccount.objects.create(
+            user_profile=user_profile,
+            account_type=account_type,
+            bank_name=bank_name,
+            account_number=other_account_number,
+            account_balance=other_account_balance
+        )
 

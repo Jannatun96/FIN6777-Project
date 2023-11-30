@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
-from .models import UserProfile, Expense
+from .models import UserProfile, Expense, OtherBankAccount
+from .models import FinancialGoal
+from .forms import FinancialGoalForm
 
 
 def base(request):
@@ -13,7 +15,14 @@ def base(request):
 def welcome(request):
     user_profile = UserProfile.objects.get(user=request.user)
     expenses = Expense.objects.filter(user=request.user)
-    return render(request, 'welcome.html', {'user_profile': user_profile, 'expenses': expenses})
+    other_bank_accounts = OtherBankAccount.objects.filter(user_profile=user_profile)
+    grouped_accounts = {}
+    for account in other_bank_accounts:
+        if account.bank_name not in grouped_accounts:
+            grouped_accounts[account.bank_name] = []
+        grouped_accounts[account.bank_name].append(account)
+
+    return render(request, 'welcome.html', {'user_profile': user_profile, 'expenses': expenses,'grouped_accounts': grouped_accounts})
 
 def user_login(request):
     if request.method == 'POST':
@@ -59,3 +68,17 @@ def user_signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+def financial_goals(request):
+    user = request.user
+    goals = FinancialGoal.objects.filter(user=user)
+
+    if request.method == 'POST':
+        form = FinancialGoalForm(request.POST)
+        if form.is_valid():
+            goal = form.save(commit=False)
+            goal.user = user
+            goal.save()
+    else:
+        form = FinancialGoalForm()
+
+    return render(request, 'financial_goals.html', {'goals': goals, 'form': form})

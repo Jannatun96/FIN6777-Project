@@ -6,20 +6,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WealthWise - Your Personal Finance App</title>
+    <title>WealthWi$e - Your Personal Finance App</title>
     <!-- Add your CSS links, scripts, or other head elements here -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- Include any additional stylesheets or scripts your project requires -->
+    <script src="{% static 'js/charts.js' %}"></script>
 </head>
 <body>
     <header>
-        <h1>WealthWise</h1>
+        <h1>WealthWi$e</h1>
         <!-- Add navigation links here -->
         <nav>
             <ul>
                 <li><a href="{% url 'signup' %}">Home</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'financial_goals' %}">Financial Goals</a></li>
 
                 <!-- Add more navigation links as needed -->
             </ul>
@@ -31,7 +32,7 @@
     </main>
 
     <footer>
-        <p>&copy; {% now 'Y' %} WealthWise. All rights reserved.</p>
+        <p>&copy; {% now 'Y' %} WealthWi$e. All rights reserved.</p>
         <!-- Add additional footer content or links -->
     </footer>
 

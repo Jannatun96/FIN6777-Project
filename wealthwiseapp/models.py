@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class FinancialAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account_type = models.CharField(max_length=100)
-    balance = models.DecimalField(max_digits=10, decimal_places=2)
+    balance = models.DecimalField(max_digits=10,decimal_places=2)
     institution = models.CharField(max_length=100)
 
 class ExpenseCategory(models.Model):
@@ -35,12 +35,35 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=30, blank=True)
     routing_number = models.CharField(max_length=9)
     bank_account_number = models.CharField(max_length=12)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     credit_card_debt = models.DecimalField(max_digits=10, decimal_places=2)
     mortgage_value = models.DecimalField(max_digits=8, decimal_places=2)
     car_loan = models.DecimalField(max_digits=8, decimal_places=2)
     student_loan = models.DecimalField(max_digits=8, decimal_places=2)
-    investment_portfolio_value = models.DecimalField(max_digits=7, decimal_places=2)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    cryptocurrency_balance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    stocks_value = models.DecimalField(max_digits=8, decimal_places=2, default =0.0)
+    bonds_value = models.DecimalField(max_digits=8, decimal_places=2, default = 0.0)
     USERNAME_FIELD = 'user'
     REQUIRED_FIELDS = ['email', 'routing_number', 'bank_account_number']
     def __str__(self):
         return self.user
+
+class OtherBankAccount(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    account_type = models.CharField(max_length=100)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=20)
+    account_balance = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.user_profile.user.username}'s {self.account_type} Account at {self.bank_name}"
+
+class FinancialGoal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    target_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_achieved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username}'s {self.title} Goal"

@@ -2,16 +2,40 @@
 
 {% block content %}
     <div id="welcome-container">
-        <h1>Welcome, {{ user_profile.user.first_name }}!</h1>
+        <h1>Welcome to WealthWi$e, {{ user_profile.user.first_name }}!</h1>
 
+        <!-- Financial Overview -->
         <div class="category-container" id="financial-overview">
             <h2 class="category-title">Financial Overview</h2>
             <ul class="category-details">
-                <li><strong>Routing Number:</strong> {{ user_profile.routing_number }}</li>
-                <li><strong>Bank Account Number:</strong> {{ user_profile.bank_account_number }}</li>
+                <li><strong>Total Debt:</strong> ${{ user_profile.credit_card_debt|add:user_profile.mortgage_value|add:user_profile.car_loan|add:user_profile.student_loan }}</li>
+                <li><strong>Total Income:</strong> ${{ user_profile.salary }}</li>
+                <li><strong>Total Investment Value:</strong> ${{ user_profile.stocks_value|add:user_profile.bonds_value|add:user_profile.cryptocurrency_balance }}</li>
+                <li><strong>Total Bank Balance:</strong>${{ 41881.82 }}</li>
             </ul>
+
         </div>
 
+        <!-- Other Bank Accounts -->
+        <div class="category-container" id="other-bank-accounts">
+            <h2 class="category-title">Bank Accounts</h2>
+            <div class="dropdown">
+                <div class="dropdown-menu" aria-labelledby="bankDropdown">
+                    {% for bank_name, accounts in grouped_accounts.items %}
+                        <a class="dropdown-item" href="#" data-toggle="collapse" data-target="#{{ bank_name }}">
+                            {{ bank_name }}
+                        </a>
+                        <div class="collapse" id="{{ bank_name }}">
+                            {% for account in accounts %}
+                                <p class="dropdown-item">${{ account.account_balance }} - {{ account.account_type }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Debt Overview -->
         <div class="category-container" id="debt-overview">
             <h2 class="category-title">Debt Overview</h2>
             <ul class="category-details">
@@ -22,13 +46,17 @@
             </ul>
         </div>
 
+        <!-- Investment Portfolio -->
         <div class="category-container" id="investment-portfolio">
-            <h2 class="category-title">Investment Portfolio</h2>
+            <h2 class="category-title">Investments</h2>
             <ul class="category-details">
-                <li><strong>Portfolio Value:</strong> ${{ user_profile.investment_portfolio_value }}</li>
+                <li><strong>Stocks Value:</strong> ${{ user_profile.stocks_value }}</li>
+                <li><strong>Bonds Value:</strong> ${{ user_profile.bonds_value }}</li>
+                <li><strong>Cryptocurrency Value:</strong> ${{ user_profile.cryptocurrency_balance }}</li>
             </ul>
         </div>
 
+        <!-- Expenses -->
         <div class="category-container" id="expenses">
             <h2 class="category-title">Expenses</h2>
             <ul class="category-details">
@@ -36,6 +64,8 @@
                     <li>${{ expense.amount }} - {{ expense.description }} - {{ expense.date }}</li>
                 {% endfor %}
             </ul>
+
         </div>
     </div>
 {% endblock %}
+
